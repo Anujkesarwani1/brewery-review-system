@@ -6,6 +6,7 @@ import {
   addBreweryReview,
   API_BASE_URL,
   MOCK_URL,
+  updateBreweryReview,
 } from '../../services/api'
 import { BreweryInfo } from 'services/utils'
 
@@ -34,15 +35,21 @@ const BreweryDetailPage = () => {
   const handleAddReview = async () => {
     try {
       if (userReview.rating > 0 && userReview.description.trim() !== '') {
-        const existingReview = reviews.find((review) => review.breweryId === id)
+        const existingReviewIndex = reviews.findIndex(
+          (review) => review.breweryId === id
+        )
 
-        if (existingReview) {
-          // Update an existing review
-          // Modify your existing API to support updating a review
-          // For example: updateBreweryReview(breweryId, reviewId, userReview)
-          // Then update the corresponding review in the state
+        if (existingReviewIndex !== -1) {
+          const updatedReviews = [...reviews]
+          const existingReview = updatedReviews[existingReviewIndex]
+
+          existingReview.rating = userReview.rating
+          existingReview.description = userReview.description
+
+          await updateBreweryReview(existingReview.id, existingReview)
+
+          setReviews(updatedReviews)
         } else {
-          // Add a new review
           const newReview = {
             breweryId: id,
             rating: userReview.rating,

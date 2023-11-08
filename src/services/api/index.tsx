@@ -50,6 +50,19 @@ export const addBreweryReview = async (breweryId: any, review: any) => {
   }
 }
 
+export const updateBreweryReview = async (reviewId: any, review: any) => {
+  try {
+    const response = await axios.patch(
+      `${MOCK_URL}/reviews/${reviewId}`,
+      review
+    )
+    return response.data
+  } catch (error) {
+    console.error('Error updating review', error)
+    throw error
+  }
+}
+
 export const fetchBreweriesByCity = async (city: string) => {
   try {
     const response = await axios.get(`${API_BASE_URL}?by_city=${city}`)
