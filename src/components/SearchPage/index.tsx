@@ -1,5 +1,7 @@
+import { signOut } from 'firebase/auth'
+import { database } from 'firebaseConfig'
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   fetchBreweriesByCity,
   fetchBreweriesByName,
@@ -11,6 +13,7 @@ const SearchPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [searchType, setSearchType] = useState('city')
+  const navigate = useNavigate()
 
   useEffect(() => {
     initialSearch()
@@ -44,6 +47,12 @@ const SearchPage: React.FC = () => {
     } catch (error) {
       console.error('Error searching breweries', error)
     }
+  }
+
+  const handleSignOut = () => {
+    signOut(database).then((val) => {
+      navigate('/')
+    })
   }
 
   return (
@@ -88,6 +97,8 @@ const SearchPage: React.FC = () => {
             </p>
           </div>
         ))}
+
+        <button onClick={handleSignOut}>Sign Out</button>
       </div>
     </div>
   )
