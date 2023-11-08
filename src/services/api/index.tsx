@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const API_BASE_URL = 'https://api.openbrewerydb.org/breweries'
+export const API_BASE_URL = 'https://api.openbrewerydb.org/breweries'
+export const MOCK_URL = 'http://localhost:3000'
 
 // Shared function to make API requests
 const fetchBreweries = async (endpoint: any, params: any) => {
@@ -24,10 +25,11 @@ export const fetchBreweryDetails = async (breweryId: any) => {
   }
 }
 
-// Function to fetch brewery reviews by ID
 export const fetchBreweryReviews = async (breweryId: any) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/${breweryId}/reviews`)
+    const response = await axios.get(
+      `${MOCK_URL}/reviews/?breweryId=${breweryId}`
+    )
     return response.data
   } catch (error) {
     console.error('Error fetching brewery reviews', error)
@@ -35,11 +37,10 @@ export const fetchBreweryReviews = async (breweryId: any) => {
   }
 }
 
-// Function to add a review for a brewery
 export const addBreweryReview = async (breweryId: any, review: any) => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL}/${breweryId}/reviews`,
+      `${MOCK_URL}/reviews/?breweryId=${breweryId}`,
       review
     )
     return response.data
@@ -49,7 +50,6 @@ export const addBreweryReview = async (breweryId: any, review: any) => {
   }
 }
 
-// Function to fetch breweries by city
 export const fetchBreweriesByCity = async (city: string) => {
   try {
     const response = await axios.get(`${API_BASE_URL}?by_city=${city}`)

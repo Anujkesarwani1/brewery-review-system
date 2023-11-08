@@ -1,52 +1,30 @@
-// import React from 'react'
-
-// const BreweryDetailPage: React.FC = () => {
-//   // Fetch brewery details and reviews from the database
-
-//   return (
-//     <div className="brewery-detail-page">
-//       <h2>Brewery Name</h2>
-//       <p>Address: Brewery Address</p>
-//       <p>Phone: Phone Number</p>
-//       <p>Website: Website URL</p>
-//       <p>Rating: Current Rating</p>
-//       <p>State, City: State, City</p>
-
-//       <div className="reviews">
-//         {/* Display existing reviews and add review functionality */}
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default BreweryDetailPage
-
-// src/components/BreweryDetailPage.tsx
-
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom' // If you're using React Router
+import { useParams } from 'react-router-dom'
 import {
   fetchBreweryDetails,
   fetchBreweryReviews,
   addBreweryReview,
+  API_BASE_URL,
+  MOCK_URL,
 } from '../../services/api'
+import { BreweryInfo } from 'services/utils'
 
-const BreweryDetailPage: React.FC = () => {
-  const { breweryId } = useParams() // Retrieve the brewery ID from the URL params
-  const [breweryDetails, setBreweryDetails] = useState(null)
-  const [reviews, setReviews] = useState([])
+const BreweryDetailPage = () => {
+  const { id } = useParams()
+  const [breweryDetails, setBreweryDetails] = useState<BreweryInfo | null>(null)
+  const [reviews, setReviews] = useState<any[]>([])
   const [userReview, setUserReview] = useState({ rating: 0, description: '' })
 
   useEffect(() => {
     fetchBreweryData()
-  }, [breweryId])
+  }, [id])
 
   const fetchBreweryData = async () => {
     try {
-      const details = await fetchBreweryDetails(breweryId)
-      const breweryReviews = await fetchBreweryReviews(breweryId)
-
+      const details = await fetchBreweryDetails(id)
       setBreweryDetails(details)
+
+      const breweryReviews = await fetchBreweryReviews(id)
       setReviews(breweryReviews)
     } catch (error) {
       console.error('Error fetching brewery data', error)
@@ -55,17 +33,31 @@ const BreweryDetailPage: React.FC = () => {
 
   const handleAddReview = async () => {
     try {
-      // Call your API to add a review for the brewery
-      await addBreweryReview(breweryId, userReview)
+      if (userReview.rating > 0 && userReview.description.trim() !== '') {
+        const existingReview = reviews.find((review) => review.breweryId === id)
 
-      // After successfully adding the review, fetch the updated reviews
-      const breweryReviews = await fetchBreweryReviews(breweryId)
-      setReviews(breweryReviews)
+        if (existingReview) {
+          // Update an existing review
+          // Modify your existing API to support updating a review
+          // For example: updateBreweryReview(breweryId, reviewId, userReview)
+          // Then update the corresponding review in the state
+        } else {
+          // Add a new review
+          const newReview = {
+            breweryId: id,
+            rating: userReview.rating,
+            description: userReview.description,
+          }
+          await addBreweryReview(id, newReview)
 
-      // Clear the user review input fields
-      setUserReview({ rating: 0, description: '' })
+          const breweryReviews = await fetchBreweryReviews(id)
+          setReviews(breweryReviews)
+        }
+
+        setUserReview({ rating: 0, description: '' })
+      }
     } catch (error) {
-      console.error('Error adding review', error)
+      console.error('Error adding or updating review', error)
     }
   }
 
@@ -75,12 +67,12 @@ const BreweryDetailPage: React.FC = () => {
         <div>
           <h2>{breweryDetails.name}</h2>
           <p>
-            Address: {breweryDetails.street}, {breweryDetails.city},{' '}
+            Address: {breweryDetails.street}, {breweryDetails.city},
             {breweryDetails.state}
           </p>
           <p>Phone: {breweryDetails.phone}</p>
           <p>
-            Website:{' '}
+            Website:
             <a
               href={breweryDetails.website_url}
               target="_blank"
@@ -89,7 +81,6 @@ const BreweryDetailPage: React.FC = () => {
               {breweryDetails.website_url}
             </a>
           </p>
-          {/* Display more details about the brewery as needed */}
         </div>
       )}
 
@@ -104,7 +95,7 @@ const BreweryDetailPage: React.FC = () => {
       </div>
 
       <div className="add-review">
-        <h3>Add a Review</h3>
+        <h3>Add or Update a Review</h3>
         <input
           type="number"
           min="1"

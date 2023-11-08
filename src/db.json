@@ -1,0 +1,16 @@
+{
+  "reviews": [
+    {
+      "id": 1,
+      "breweryId": "810e0e7c-293a-4e3e-a557-13691d30d399",
+      "rating": 4,
+      "description": "Great brewery!"
+    },
+    {
+      "breweryId": "03df12a0-f2ff-4c37-b862-e6df31123b74",
+      "rating": 5,
+      "description": "Anuj",
+      "id": 2
+    }
+  ]
+}
