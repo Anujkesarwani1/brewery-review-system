@@ -17,6 +17,12 @@
       "rating": 4,
       "description": "Good Work Wild Heaven Craft Beers",
       "id": 3
+    },
+    {
+      "breweryId": "7531dbd8-afc9-4b5b-95bc-7ece7f2c0bf3",
+      "rating": 3,
+      "description": "Add Website",
+      "id": 4
     }
   ]
 }

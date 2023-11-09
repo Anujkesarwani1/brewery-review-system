@@ -12,7 +12,7 @@
     "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "mock-server": "json-server --watch src/db.json",
+    "json-server": "json-server --watch src/db.json",
     "chromatic": "npx chromatic --project-token=chpt_e333601c4760ec2"
   },
   "keywords": [],

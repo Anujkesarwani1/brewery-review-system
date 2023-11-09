@@ -3,16 +3,6 @@ import axios from 'axios'
 export const API_BASE_URL = 'https://api.openbrewerydb.org/breweries'
 export const MOCK_URL = 'http://localhost:3000'
 
-const fetchBreweries = async (endpoint: any, params: any) => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}${endpoint}`, { params })
-    return response.data
-  } catch (error) {
-    console.error(`Error fetching breweries${endpoint}`, error)
-    throw error
-  }
-}
-
 export const fetchBreweryDetails = async (breweryId: any) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/${breweryId}`)
