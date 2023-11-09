@@ -15,12 +15,12 @@ const SignUpAndSignIn: React.FC = () => {
 
   const handleSubmit = (e: any, type: any) => {
     e.preventDefault()
-    console.log(email, password)
+    // console.log(email, password)
 
     if (type === 'signup') {
       createUserWithEmailAndPassword(database, email, password)
         .then((data) => {
-          console.log(data, 'Auth Data')
+          // console.log(data, 'Auth Data') 
           navigate('/search')
         })
         .catch((error) => {
@@ -30,7 +30,7 @@ const SignUpAndSignIn: React.FC = () => {
     } else {
       signInWithEmailAndPassword(database, email, password)
         .then((data) => {
-          console.log(data, 'Auth Data')
+          // console.log(data, 'Auth Data')
           navigate('/search')
         })
         .catch((error) => {
