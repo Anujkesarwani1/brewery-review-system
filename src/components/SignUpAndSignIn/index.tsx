@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
-import '../../style.css'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { database } from 'firebaseConfig'
+import { Button, Stack, TextField, Typography } from '@mui/material'
 
 const SignUpAndSignIn: React.FC = () => {
   const [login, setLogin] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
   const handleSubmit = (e: any, type: any) => {
     e.preventDefault()
-    // console.log(e.target.email.value)
-    const email = e.target.email.value
-    const password = e.target.password.value
+    console.log(email, password)
 
-    if (type == 'signup') {
+    if (type === 'signup') {
       createUserWithEmailAndPassword(database, email, password)
         .then((data) => {
           console.log(data, 'Auth Data')
@@ -40,29 +40,70 @@ const SignUpAndSignIn: React.FC = () => {
   }
 
   return (
-    <div className="App">
-      <div
-        className={login == false ? 'activeColor' : 'pointer'}
-        onClick={() => setLogin(false)}
-      >
-        SignUp
-      </div>
-      <div
-        className={login == true ? 'activeColor' : 'pointer'}
-        onClick={() => setLogin(true)}
-      >
-        SignIn
-      </div>
-      <h2>{login ? 'Sign In' : 'Sign Up'}</h2>
-      <form onSubmit={(e) => handleSubmit(e, login ? 'signin' : 'signup')}>
-        <input name="email" placeholder="Email" />
-        <br />
-        <input name="password" type="password" placeholder="Password" />
-        <br />
-        <br />
-        <button>{login ? 'Sign In' : 'Sign Up'}</button>
-      </form>
-    </div>
+    <Stack
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      width="100%"
+    >
+      <Stack flexDirection="row" gap={2} width="30rem">
+        <Button
+          disabled={login === false}
+          onClick={() => setLogin(false)}
+          sx={{ textTransform: 'none', fontWeight: 'bold' }}
+          variant="outlined"
+          size="large"
+          fullWidth
+        >
+          Sign Up
+        </Button>
+        <Button
+          disabled={login === true}
+          onClick={() => setLogin(true)}
+          sx={{ textTransform: 'none', fontWeight: 'bold' }}
+          variant="outlined"
+          size="large"
+          fullWidth
+        >
+          Sign In
+        </Button>
+      </Stack>
+
+      <Stack flexDirection="column" alignItems="center">
+        <Typography variant="h3" marginTop={3}>
+          {login ? 'Sign In' : 'Sign Up'}
+        </Typography>
+        <TextField
+          sx={{ marginTop: '2rem', width: '30rem' }}
+          label="Email"
+          variant="outlined"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <TextField
+          sx={{ marginTop: '2rem', width: '30rem' }}
+          label="Password"
+          variant="outlined"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <Button
+          variant="contained"
+          onClick={(e) => handleSubmit(e, login ? 'signin' : 'signup')}
+          sx={{ textTransform: 'none', marginTop: '2rem', fontWeight: 'bold' }}
+          size="large"
+          fullWidth
+        >
+          {login ? 'Sign In' : 'Sign Up'}
+        </Button>
+      </Stack>
+    </Stack>
   )
 }
 

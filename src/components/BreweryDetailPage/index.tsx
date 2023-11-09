@@ -1,20 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
   fetchBreweryDetails,
   fetchBreweryReviews,
   addBreweryReview,
-  API_BASE_URL,
-  MOCK_URL,
   updateBreweryReview,
 } from '../../services/api'
+import {
+  Typography,
+  Container,
+  Grid,
+  Paper,
+  Button,
+  TextField,
+  TextareaAutosize,
+} from '@mui/material'
 import { BreweryInfo } from 'services/utils'
+import { signOut } from 'firebase/auth'
+import { database } from 'firebaseConfig'
 
 const BreweryDetailPage = () => {
   const { id } = useParams()
   const [breweryDetails, setBreweryDetails] = useState<BreweryInfo | null>(null)
   const [reviews, setReviews] = useState<any[]>([])
   const [userReview, setUserReview] = useState({ rating: 0, description: '' })
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchBreweryData()
@@ -68,17 +78,23 @@ const BreweryDetailPage = () => {
     }
   }
 
+  const handleSignOut = () => {
+    signOut(database).then((val) => {
+      navigate('/')
+    })
+  }
+
   return (
-    <div className="brewery-detail-page">
+    <Container>
       {breweryDetails && (
-        <div>
-          <h2>{breweryDetails.name}</h2>
-          <p>
-            Address: {breweryDetails.street}, {breweryDetails.city},
+        <Paper elevation={3} style={{ padding: '16px', marginBottom: '16px' }}>
+          <Typography variant="h4">{breweryDetails.name}</Typography>
+          <Typography>
+            Address: {breweryDetails.street}, {breweryDetails.city},{' '}
             {breweryDetails.state}
-          </p>
-          <p>Phone: {breweryDetails.phone}</p>
-          <p>
+          </Typography>
+          <Typography>Phone: {breweryDetails.phone}</Typography>
+          <Typography>
             Website:
             <a
               href={breweryDetails.website_url}
@@ -87,42 +103,73 @@ const BreweryDetailPage = () => {
             >
               {breweryDetails.website_url}
             </a>
-          </p>
-        </div>
+          </Typography>
+        </Paper>
       )}
 
-      <div className="reviews">
-        <h3>Reviews</h3>
-        {reviews.map((review, index) => (
-          <div key={index}>
-            <p>Rating: {review.rating}</p>
-            <p>Description: {review.description}</p>
-          </div>
-        ))}
-      </div>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3} style={{ padding: '16px' }}>
+            <Typography variant="h6">Reviews</Typography>
+            {reviews.map((review, index) => (
+              <div key={index}>
+                <Typography>Rating: {review.rating}</Typography>
+                <Typography>Description: {review.description}</Typography>
+              </div>
+            ))}
+          </Paper>
+        </Grid>
 
-      <div className="add-review">
-        <h3>Add or Update a Review</h3>
-        <input
-          type="number"
-          min="1"
-          max="5"
-          placeholder="Rating (1-5)"
-          value={userReview.rating}
-          onChange={(e) =>
-            setUserReview({ ...userReview, rating: parseInt(e.target.value) })
-          }
-        />
-        <textarea
-          placeholder="Description"
-          value={userReview.description}
-          onChange={(e) =>
-            setUserReview({ ...userReview, description: e.target.value })
-          }
-        />
-        <button onClick={handleAddReview}>Submit Review</button>
-      </div>
-    </div>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3} style={{ padding: '16px' }}>
+            <Typography variant="h6">Add or Update a Review</Typography>
+            <TextField
+              type="number"
+              InputProps={{ inputProps: { min: 1, max: 5 } }}
+              label="Rating (1-5)"
+              variant="outlined"
+              value={userReview.rating}
+              onChange={(e) =>
+                setUserReview({
+                  ...userReview,
+                  rating: parseInt(e.target.value),
+                })
+              }
+              fullWidth
+              margin="normal"
+            />
+            <TextareaAutosize
+              minRows={4}
+              placeholder="Description"
+              value={userReview.description}
+              onChange={(e) =>
+                setUserReview({ ...userReview, description: e.target.value })
+              }
+              style={{ width: '100%', marginTop: '16px' }}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddReview}
+              style={{ marginTop: '16px', textTransform: 'none' }}
+            >
+              Submit Review
+            </Button>
+          </Paper>
+        </Grid>
+      </Grid>
+
+      <Button
+        variant="contained"
+        onClick={handleSignOut}
+        fullWidth
+        size="large"
+        color="error"
+        sx={{ textTransform: 'none', marginTop: '2rem' }}
+      >
+        Sign Out
+      </Button>
+    </Container>
   )
 }
 

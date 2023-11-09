@@ -3,7 +3,6 @@ import axios from 'axios'
 export const API_BASE_URL = 'https://api.openbrewerydb.org/breweries'
 export const MOCK_URL = 'http://localhost:3000'
 
-// Shared function to make API requests
 const fetchBreweries = async (endpoint: any, params: any) => {
   try {
     const response = await axios.get(`${API_BASE_URL}${endpoint}`, { params })
@@ -14,7 +13,6 @@ const fetchBreweries = async (endpoint: any, params: any) => {
   }
 }
 
-// Function to fetch brewery details by ID
 export const fetchBreweryDetails = async (breweryId: any) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/${breweryId}`)
@@ -73,7 +71,6 @@ export const fetchBreweriesByCity = async (city: string) => {
   }
 }
 
-// Function to fetch breweries by name
 export const fetchBreweriesByName = async (name: string) => {
   try {
     const response = await axios.get(`${API_BASE_URL}?by_name=${name}`)
@@ -84,7 +81,6 @@ export const fetchBreweriesByName = async (name: string) => {
   }
 }
 
-// Function to fetch breweries by type
 export const fetchBreweriesByType = async (type: string) => {
   try {
     const response = await axios.get(`${API_BASE_URL}?by_type=${type}`)

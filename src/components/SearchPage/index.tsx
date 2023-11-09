@@ -1,3 +1,13 @@
+import {
+  Button,
+  Grid,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { signOut } from 'firebase/auth'
 import { database } from 'firebaseConfig'
 import React, { useState, useEffect } from 'react'
@@ -56,51 +66,89 @@ const SearchPage: React.FC = () => {
   }
 
   return (
-    <div className="search-page">
-      <h2>Search Breweries</h2>
-      <div className="search-input">
-        <input
+    // Search Breweries
+    <Stack>
+      <Typography variant="h3" marginBottom="1rem">
+        Search Breweries
+      </Typography>
+      <Stack spacing={2} direction="row" alignItems="center" width="100%">
+        <TextField
           type="text"
-          placeholder={`Search by ${searchType}`}
+          label={`Search by ${searchType}`}
+          variant="outlined"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          fullWidth
+          size="small"
         />
-        <select
+        <Select
+          label={`${searchType}`}
           value={searchType}
           onChange={(e) => setSearchType(e.target.value)}
+          variant="outlined"
+          fullWidth
+          size="small"
         >
-          <option value="city">City</option>
-          <option value="name">Name</option>
-          <option value="type">Type</option>
-        </select>
-        <button onClick={handleSearch}>Search</button>
-      </div>
-      <div className="search-results">
-        {searchResults.map((brewery: BreweryInfo) => (
-          <div key={brewery.id}>
-            <h3>
-              <Link to={`/brewery/${brewery.id}`}>{brewery.name}</Link>
-            </h3>
-            <p>
-              Address: {brewery.street}, {brewery.city}, {brewery.state}
-            </p>
-            <p>Phone: {brewery.phone}</p>
-            <p>
-              Website:
-              <a
-                href={brewery.website_url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {brewery.website_url}
-              </a>
-            </p>
-          </div>
-        ))}
+          <MenuItem value="city">City</MenuItem>
+          <MenuItem value="name">Name</MenuItem>
+          <MenuItem value="type">Type</MenuItem>
+        </Select>
+        <Button
+          variant="contained"
+          onClick={handleSearch}
+          sx={{ textTransform: 'none' }}
+          size="large"
+          fullWidth
+          color="info"
+        >
+          Search
+        </Button>
 
-        <button onClick={handleSignOut}>Sign Out</button>
-      </div>
-    </div>
+        <Button
+          onClick={handleSignOut}
+          variant="contained"
+          size="large"
+          fullWidth
+          sx={{ textTransform: 'none' }}
+          color="error"
+        >
+          Sign Out
+        </Button>
+      </Stack>
+
+      {/* Search Result */}
+
+      <Stack className="search-results" marginTop="1rem">
+        <Grid container spacing={2}>
+          {searchResults.map((brewery: BreweryInfo) => (
+            <Grid item key={brewery.id} xs={12} sm={6} md={4} lg={3} xl={4}>
+              <Paper
+                elevation={1}
+                style={{ padding: '16px', border: '1px solid #ccc' }}
+              >
+                <Typography variant="body1" fontWeight="bold">
+                  <Link to={`/brewery/${brewery.id}`}>{brewery.name}</Link>
+                </Typography>
+                <Typography>
+                  Address: {brewery.street}, {brewery.city}, {brewery.state}
+                </Typography>
+                <Typography>Phone: {brewery.phone}</Typography>
+                <Typography>
+                  Website:
+                  <a
+                    href={brewery.website_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {brewery.website_url}
+                  </a>
+                </Typography>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      </Stack>
+    </Stack>
   )
 }
 
