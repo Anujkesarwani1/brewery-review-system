@@ -20,7 +20,7 @@ const SignUpAndSignIn: React.FC = () => {
     if (type === 'signup') {
       createUserWithEmailAndPassword(database, email, password)
         .then((data) => {
-          // console.log(data, 'Auth Data') 
+          // console.log(data, 'Auth Data')
           navigate('/search')
         })
         .catch((error) => {

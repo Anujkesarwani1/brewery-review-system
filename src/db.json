@@ -4,7 +4,8 @@
       "id": 1,
       "breweryId": "810e0e7c-293a-4e3e-a557-13691d30d399",
       "rating": 4,
-      "description": "Great Brewery!"
+      "description": "Great Brewery!",
+      "userId": 111
     },
     {
       "breweryId": "03df12a0-f2ff-4c37-b862-e6df31123b74",
@@ -23,6 +24,40 @@
       "rating": 3,
       "description": "Add Website",
       "id": 4
+    },
+    {
+      "breweryId": "810e0e7c-293a-4e3e-a557-13691d30d399",
+      "userId": 112,
+      "rating": 2,
+      "description": "fdf",
+      "id": 5
+    },
+    {
+      "breweryId": "03df12a0-f2ff-4c37-b862-e6df31123b74",
+      "userId": 2,
+      "rating": 4,
+      "description": "dfdf",
+      "id": 6
+    },
+    {
+      "breweryId": "810e0e7c-293a-4e3e-a557-13691d30d399",
+      "userId": 113,
+      "rating": 4,
+      "description": "fdf",
+      "id": 7
+    },
+    {
+      "breweryId": "810e0e7c-293a-4e3e-a557-13691d30d399",
+      "userId": 114,
+      "rating": 2,
+      "description": "adfdsf",
+      "id": 8
+    },
+    {
+      "breweryId": "8d1600f2-6526-4bdb-8992-bb0fdb286005",
+      "rating": 3,
+      "description": "Nice Work",
+      "id": 9
     }
   ]
 }
